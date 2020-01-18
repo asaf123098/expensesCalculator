@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<years>
+ <year num="2019">
+  <month num="7">
+   <expense description="White Nike Air Force" type="shoes" value="315"/>
+  </month>
+  <month num="8">
+   <expense type="hair_cut" value="50"/>
+  </month>
+  <month num="9">
+   <expense day="19" type="shirt" value="120"/>
+   <expense day="22" type="shirt" value="50"/>
+   <expense day="27" type="hair_cut" value="50"/>
+  </month>
+  <month num="10">
+   <expense day="4" type="shirt" value="50"/>
+   <expense day="29" type="jeans_and_shirt" value="290"/>
+  </month>
+  <month num="11">
+   <expense day="1" type="hair_cut" value="50"/>
+   <expense day="8" type="jeans_and_shirt" value="225"/>
+   <expense day="17" type="shirt" value="25"/>
+   <expense day="26" type="shirt" value="37"/>
+  </month>
+  <month num="12">
+   <expense day="12" type="hair_cut" value="50"/>
+  </month>
+ </year>
+ <year num="2020">
+  <month num="1">
+   <expense day="14" type="hair_cut" value="50"/>
+   <expense day="12" type="passport_renew" value="75"/>
+  </month>
+ </year>
+</years>
