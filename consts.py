@@ -15,7 +15,7 @@ class TableNames:
 
 
 class ColumnNames:
-
+    DESCRIPTION = 'optionalDescription'
     EXPENSE_ID = 'expenseId'
     PRICE = 'price'
     DATE_STR = 'dateStr'

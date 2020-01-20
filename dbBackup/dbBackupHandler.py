@@ -1,19 +1,16 @@
 import os
 import subprocess
-from configparser import ConfigParser
+
+from dbConnectionData import DB_USER, DB_PASS, DB_NAME
+
 
 errors_whitelist = ['mysql: [Warning] Using a password on the command line interface can be insecure.\r\n',
                     'mysqldump: [Warning] Using a password on the command line interface can be insecure.\r\n']
 
 CURRENT_PATH = os.path.dirname(__file__)
-CONF_FILE_PATH = os.path.normpath(os.path.join(CURRENT_PATH, "..", 'conf.ini'))
 DB_BACKUP_FILE_PATH = os.path.normpath(os.path.join(CURRENT_PATH, "db_backup.sql"))
 
-parser = ConfigParser()
-parser.read(CONF_FILE_PATH)
-DB_NAME = parser.get("DatabaseData", 'DBName')
-DB_USER = parser.get("DatabaseData", 'DBRootUser')
-DB_PASS = parser.get("DatabaseData", 'DBPass')
+
 
 def export_db_to_backup():
     cmd_line = f"mysqldump -u {DB_USER} --password={DB_PASS} --databases {DB_NAME} > {DB_BACKUP_FILE_PATH}"
