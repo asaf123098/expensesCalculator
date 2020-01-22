@@ -1,5 +1,5 @@
 from  mysql.connector import connect
-from consts import TableNames, ColumnNames, ExpenseTypes
+from consts import TableNames, ColumnNames, Values
 from dbConnectionData import DB_USER, DB_PASS, DB_NAME
 
 class ExpensesHandler:
@@ -10,6 +10,20 @@ class ExpensesHandler:
 									  host='localhost', db=DB_NAME)
 		self.cursor = self.connection.cursor()
 
+	def get_all_expenses_from_dad(self):
+		expense_ids = self._get_all_expense_ids_matching_income_type(Values.FROM_DAD)
+		self.cursor.execute(operation=f"SELECT * FROM {TableNames.EXPENSES} "
+									  f"WHERE {ColumnNames.EXPENSE_ID} IN ({', '.join(expense_ids)});")
+		return self.cursor.fetchall()
+
+	def _get_all_expense_ids_matching_income_type(self, income_type):
+		self.cursor.execute(operation=f"SELECT "
+									  f"exp.{ColumnNames.EXPENSE_ID} "
+									  f"FROM {TableNames.EXPENSE_DETAILS} exp "
+									  f"INNER JOIN {TableNames.INCOME_DETAILS} inc "
+									  f"ON inc.{ColumnNames.INCOME_NAME} = '{income_type}';")
+
+		return list(map(lambda x:str(x[0]), self.cursor.fetchall()))
 
 	def add_expense(self, id, date, price, description=None):
 		if not self._does_expense_exist(id=id, date=date, price=price):
@@ -41,4 +55,4 @@ class ExpensesHandler:
 
 if __name__ == "__main__":
 
-	print(ExpensesHandler().add_expense(id=ExpenseTypes.SHOES, date="27-09-2018", price=315))
+	print(ExpensesHandler().get_all_expenses_from_dad())

@@ -1,11 +1,3 @@
-class ExpenseTypes:
-
-    HAIRCUT = 1
-    SHIRT = 2
-    JEANS = 3
-    SHOES = 4
-
-
 class TableNames:
     EXPENSES = 'expenses'
     EXPENSE_DETAILS = 'expense_details'
@@ -15,7 +7,14 @@ class TableNames:
 
 
 class ColumnNames:
-    DESCRIPTION = 'optionalDescription'
+    DATE_STR = 'dateStr'
     EXPENSE_ID = 'expenseId'
     PRICE = 'price'
-    DATE_STR = 'dateStr'
+    DESCRIPTION = 'optionalDescription'
+
+    INCOME_ID = 'incomeId'
+    INCOME_NAME = 'incomeName'
+
+
+class Values:
+    FROM_DAD = 'from_dad'
