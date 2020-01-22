@@ -46,7 +46,7 @@ CREATE TABLE `expense_details` (
 
 LOCK TABLES `expense_details` WRITE;
 /*!40000 ALTER TABLE `expense_details` DISABLE KEYS */;
-INSERT INTO `expense_details` VALUES (1,0,''),(2,0,''),(3,0,''),(4,0,'');
+INSERT INTO `expense_details` VALUES (1,0,'Haircut'),(2,0,'Shirt'),(3,0,'Jeans'),(4,0,'Shoes');
 /*!40000 ALTER TABLE `expense_details` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -88,7 +88,7 @@ CREATE TABLE `income_details` (
   `incomeId` int NOT NULL AUTO_INCREMENT,
   `incomeName` varchar(25) NOT NULL,
   PRIMARY KEY (`incomeId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -97,6 +97,7 @@ CREATE TABLE `income_details` (
 
 LOCK TABLES `income_details` WRITE;
 /*!40000 ALTER TABLE `income_details` DISABLE KEYS */;
+INSERT INTO `income_details` VALUES (1,'from_dad');
 /*!40000 ALTER TABLE `income_details` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -135,4 +136,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-01-22 23:52:44
+-- Dump completed on 2020-01-23  0:33:22
