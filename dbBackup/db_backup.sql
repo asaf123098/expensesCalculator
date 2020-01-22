@@ -16,6 +16,14 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Current Database: `financials`
+--
+
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `financials` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+
+USE `financials`;
+
+--
 -- Table structure for table `expense_details`
 --
 
@@ -24,8 +32,11 @@ DROP TABLE IF EXISTS `expense_details`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `expense_details` (
   `expenseId` int NOT NULL AUTO_INCREMENT,
-  `expenseType` varchar(25) NOT NULL,
-  PRIMARY KEY (`expenseId`)
+  `incomeId` int NOT NULL,
+  `expenseName` varchar(25) NOT NULL,
+  PRIMARY KEY (`expenseId`),
+  KEY `expense_to_income_pointer_idx` (`incomeId`),
+  CONSTRAINT `expense_to_income_pointer` FOREIGN KEY (`incomeId`) REFERENCES `income_details` (`incomeId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -35,7 +46,7 @@ CREATE TABLE `expense_details` (
 
 LOCK TABLES `expense_details` WRITE;
 /*!40000 ALTER TABLE `expense_details` DISABLE KEYS */;
-INSERT INTO `expense_details` VALUES (1,'Haircut'),(2,'Shirt'),(3,'Jeans'),(4,'Shoes');
+INSERT INTO `expense_details` VALUES (1,0,''),(2,0,''),(3,0,''),(4,0,'');
 /*!40000 ALTER TABLE `expense_details` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -75,7 +86,7 @@ DROP TABLE IF EXISTS `income_details`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `income_details` (
   `incomeId` int NOT NULL AUTO_INCREMENT,
-  `incomeType` varchar(25) NOT NULL,
+  `incomeName` varchar(25) NOT NULL,
   PRIMARY KEY (`incomeId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -101,8 +112,8 @@ CREATE TABLE `incomes` (
   `incomeId` int NOT NULL,
   `amount` int NOT NULL,
   `optionalDescription` varchar(150) DEFAULT NULL,
-  KEY `inc_id` (`incomeId`),
-  CONSTRAINT `inc_id` FOREIGN KEY (`incomeId`) REFERENCES `income_details` (`incomeId`)
+  KEY `income_to_income_type_pointer_idx` (`incomeId`) /*!80000 INVISIBLE */,
+  CONSTRAINT `income_to_income_type_pointer` FOREIGN KEY (`incomeId`) REFERENCES `income_details` (`incomeId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -124,4 +135,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-01-19  1:09:09
+-- Dump completed on 2020-01-22 23:52:44
