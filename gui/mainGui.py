@@ -1,12 +1,13 @@
 import sys
 
 from PyQt5 import QtWidgets, uic
-from PyQt5.QtCore import Qt, QLine
+from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPalette, QColor
 from PyQt5.QtWidgets import QLineEdit, QPushButton, QScrollArea, QLabel, QApplication, QWidget, QVBoxLayout, QHBoxLayout
 
 from consts import ColumnNames
 from expenseshandler import ExpensesHandler
+from gui.expnsesGui import ExpensesGui
 
 
 class MainGui(QtWidgets.QMainWindow):
@@ -23,17 +24,19 @@ class MainGui(QtWidgets.QMainWindow):
         self._init_update_button()
         self._fill_expenses_container()
 
-
     def _fill_expenses_container(self):
-        income_types = self.expenses_handler.get_all_income_types() * 50
+        income_types = self.expenses_handler.get_all_income_types()
         self.expenses_scroll = self._find_widget(QScrollArea, 'scrollArea')
-        self.widget = QWidget()  # Widget that contains the collection of Vertical Box
+        self.widget = self._find_widget(QWidget, 'scrollAreaWidget')
         self.vbox = QVBoxLayout()
 
         for income in income_types:
+            income_name = income[ColumnNames.INCOME_NAME]
             horizontal_layout = QHBoxLayout()
-            label = QLabel(income[ColumnNames.INCOME_NAME])
+            horizontal_layout.setObjectName(income_name)
+            label = QLabel(income_name)
             open_button = QPushButton("Open")
+            open_button.clicked.connect(self._open_expense_window_by_income_name(income_name))
             horizontal_layout.addWidget(label)
             horizontal_layout.addWidget(open_button)
 
@@ -45,6 +48,14 @@ class MainGui(QtWidgets.QMainWindow):
         self.expenses_scroll.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
         self.expenses_scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.expenses_scroll.setWidget(self.widget)
+
+    def _open_expense_window_by_income_name(self, income_name):
+        def _open_win():
+            all_expenses = self.expenses_handler.get_all_expenses_by_income_name(income_name)
+            app = ExpensesGui(self, all_expenses)
+            app.show()
+
+        return _open_win
 
     def _init_update_button(self):
         self.update_button = self._find_widget(QPushButton, 'update_button')
