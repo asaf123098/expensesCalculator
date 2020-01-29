@@ -10,8 +10,8 @@ class ExpensesHandler:
 									  host='localhost', db=DB_NAME)
 		self.cursor = self.connection.cursor()
 
-	def get_all_expenses_from_dad(self):
-		expense_ids = self._get_all_expense_ids_matching_income_type(IncomeTypes.FROM_DAD)
+	def get_all_expenses_by_income_name(self, income_name):
+		expense_ids = self._get_all_expense_ids_matching_income_type(income_name)
 		self.cursor.execute(operation=f"SELECT * FROM {TableNames.EXPENSES} "
 									  f"WHERE {ColumnNames.EXPENSE_ID} IN ({', '.join(expense_ids)});")
 
