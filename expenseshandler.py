@@ -1,5 +1,5 @@
 from  mysql.connector import connect
-from consts import TableNames, ColumnNames, Values
+from consts import TableNames, ColumnNames, IncomeTypes
 from dbConnectionData import DB_USER, DB_PASS, DB_NAME
 
 class ExpensesHandler:
@@ -11,10 +11,37 @@ class ExpensesHandler:
 		self.cursor = self.connection.cursor()
 
 	def get_all_expenses_from_dad(self):
-		expense_ids = self._get_all_expense_ids_matching_income_type(Values.FROM_DAD)
+		expense_ids = self._get_all_expense_ids_matching_income_type(IncomeTypes.FROM_DAD)
 		self.cursor.execute(operation=f"SELECT * FROM {TableNames.EXPENSES} "
 									  f"WHERE {ColumnNames.EXPENSE_ID} IN ({', '.join(expense_ids)});")
-		return self.cursor.fetchall()
+
+		expenses_dicts = []
+		expenses_list = self.cursor.fetchall()
+
+		for exp in expenses_list:
+			dict = {}
+			dict[ColumnNames.DATE_STR] = exp[0]
+			dict[ColumnNames.EXPENSE_ID] = exp[1]
+			dict[ColumnNames.PRICE] = exp[2]
+			dict[ColumnNames.DESCRIPTION] = exp[3]
+
+			expenses_dicts.append(dict)
+
+		return expenses_dicts
+
+	def get_all_income_types(self):
+		self.cursor.execute(operation=f"SELECT {ColumnNames.INCOME_ID}, {ColumnNames.INCOME_NAME} FROM {TableNames.INCOME_DETAILS};")
+
+		incomes_dicts = []
+		incomes_list = self.cursor.fetchall()
+
+		for exp in incomes_list:
+			dict = {}
+			dict[ColumnNames.INCOME_ID] = exp[0]
+			dict[ColumnNames.INCOME_NAME] = exp[1]
+			incomes_dicts.append(dict)
+
+		return incomes_dicts
 
 	def _get_all_expense_ids_matching_income_type(self, income_type):
 		self.cursor.execute(operation=f"SELECT "
@@ -48,11 +75,10 @@ class ExpensesHandler:
 
 	def __del__(self):
 		if hasattr(self, 'connection'):
-			self.connection.close()
-		if hasattr(self, 'cursor'):
-			self.cursor.close()
-
+			if self.connection.is_connected():
+				self.connection.close()
 
 if __name__ == "__main__":
 
-	print(ExpensesHandler().get_all_expenses_from_dad())
+	# print(ExpensesHandler().get_all_expenses_from_dad())
+	print(ExpensesHandler().get_all_income_types())

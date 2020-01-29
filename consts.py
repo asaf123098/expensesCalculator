@@ -16,5 +16,5 @@ class ColumnNames:
     INCOME_NAME = 'incomeName'
 
 
-class Values:
+class IncomeTypes:
     FROM_DAD = 'from_dad'
