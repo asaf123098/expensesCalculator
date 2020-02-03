@@ -52,6 +52,11 @@ class ExpensesHandler:
 
 		return list(map(lambda x:str(x[0]), self.cursor.fetchall()))
 
+	def _get_expense_name_by_id(self, id):
+		self.cursor.execute(operation=f"SELECT {ColumnNames.EXPENSE_NAME} FROM {TableNames.EXPENSE_DETAILS} "
+									  f"WHERE {ColumnNames.EXPENSE_ID} = {id}")
+		return self.cursor.fetchall()[0][0]
+
 	def add_expense(self, id, date, price, description=None):
 		if not self._does_expense_exist(id=id, date=date, price=price):
 			columns_list = [ColumnNames.DATE_STR, ColumnNames.EXPENSE_ID, ColumnNames.PRICE, ColumnNames.DESCRIPTION]

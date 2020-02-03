@@ -7,15 +7,15 @@ from PyQt5.QtWidgets import QLineEdit, QPushButton, QScrollArea, QLabel, QApplic
 
 from consts import ColumnNames
 from expenseshandler import ExpensesHandler
-from gui.expnsesGui import ExpensesGui
+from gui.expensesWindow import ExpensesWindow
 
 
-class MainGui(QtWidgets.QMainWindow):
+class MainWindow(QtWidgets.QMainWindow):
 
     def __init__(self):
-        super(MainGui, self).__init__()
+        super(MainWindow, self).__init__()
         self.expenses_handler = ExpensesHandler()
-        uic.loadUi(r"C:\Users\Asaf\Desktop\expensesCalculator\gui\mainGui.ui", self)
+        uic.loadUi(r"C:\Users\Asaf\Desktop\expensesCalculator\gui\mainWindow.ui", self)
         self._init_widget_objects()
 
     def _init_widget_objects(self):
@@ -52,7 +52,7 @@ class MainGui(QtWidgets.QMainWindow):
     def _open_expense_window_by_income_name(self, income_name):
         def _open_win():
             all_expenses = self.expenses_handler.get_all_expenses_by_income_name(income_name)
-            app = ExpensesGui(self, all_expenses)
+            app = ExpensesWindow(self, all_expenses, self.expenses_handler)
             app.show()
 
         return _open_win
@@ -98,7 +98,7 @@ if __name__ == "__main__":
     app = QApplication([])
     # _set_theme_darcula(app)
 
-    main_gui = MainGui()
+    main_gui = MainWindow()
     main_gui.show()
 
     sys.exit(app.exec_())
