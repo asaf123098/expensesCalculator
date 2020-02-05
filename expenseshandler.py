@@ -10,8 +10,27 @@ class ExpensesHandler:
 									  host='localhost', db=DB_NAME)
 		self.cursor = self.connection.cursor()
 
+	def get_all_incomes_by_income_name(self, income_name):
+		ids = self._get_all_ids_matching_income_type(income_name)
+		self.cursor.execute(operation=f"SELECT * FROM {TableNames.INCOMES} "
+									  f"WHERE {ColumnNames.INCOME_ID} IN ({', '.join(ids)});")
+
+		incomes_dicts = []
+		incomes_list = self.cursor.fetchall()
+
+		for inc in incomes_list:
+			dict = {}
+			dict[ColumnNames.DATE_STR] = inc[0]
+			dict[ColumnNames.EXPENSE_ID] = inc[1]
+			dict[ColumnNames.PRICE] = inc[2]
+			dict[ColumnNames.DESCRIPTION] = inc[3]
+
+			incomes_dicts.append(dict)
+
+		return incomes_dicts
+
 	def get_all_expenses_by_income_name(self, income_name):
-		expense_ids = self._get_all_expense_ids_matching_income_type(income_name)
+		expense_ids = self._get_all_ids_matching_income_type(income_name)
 		self.cursor.execute(operation=f"SELECT * FROM {TableNames.EXPENSES} "
 									  f"WHERE {ColumnNames.EXPENSE_ID} IN ({', '.join(expense_ids)});")
 
@@ -43,7 +62,7 @@ class ExpensesHandler:
 
 		return incomes_dicts
 
-	def _get_all_expense_ids_matching_income_type(self, income_type):
+	def _get_all_ids_matching_income_type(self, income_type):
 		self.cursor.execute(operation=f"SELECT "
 									  f"exp.{ColumnNames.EXPENSE_ID} "
 									  f"FROM {TableNames.EXPENSE_DETAILS} exp "

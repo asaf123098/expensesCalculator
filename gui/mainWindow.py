@@ -52,7 +52,8 @@ class MainWindow(QtWidgets.QMainWindow):
     def _open_expense_window_by_income_name(self, income_name):
         def _open_win():
             all_expenses = self.expenses_handler.get_all_expenses_by_income_name(income_name)
-            app = ExpensesWindow(self, all_expenses, self.expenses_handler)
+            all_incomes = self.expenses_handler.get_all_incomes_by_income_name(income_name)
+            app = ExpensesWindow(self, all_expenses, all_incomes, self.expenses_handler)
             app.show()
 
         return _open_win
