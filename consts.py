@@ -8,6 +8,7 @@ class TableNames:
 
 class ColumnNames:
     DATE_STR = 'dateStr'
+    AMOUNT = 'amount'
     EXPENSE_ID = 'expenseId'
     EXPENSE_NAME = 'expenseName'
     PRICE = 'price'

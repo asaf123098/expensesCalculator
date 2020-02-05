@@ -30,13 +30,12 @@ class MainWindow(QtWidgets.QMainWindow):
         self.widget = self._find_widget(QWidget, 'scrollAreaWidget')
         self.vbox = QVBoxLayout()
 
-        for income in income_types:
-            income_name = income[ColumnNames.INCOME_NAME]
+        for income_type in income_types:
             horizontal_layout = QHBoxLayout()
-            horizontal_layout.setObjectName(income_name)
-            label = QLabel(income_name)
+            horizontal_layout.setObjectName(income_type)
+            label = QLabel(income_type)
             open_button = QPushButton("Open")
-            open_button.clicked.connect(self._open_expense_window_by_income_name(income_name))
+            open_button.clicked.connect(self._open_expense_window_by_income_name(income_type))
             horizontal_layout.addWidget(label)
             horizontal_layout.addWidget(open_button)
 
@@ -52,7 +51,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def _open_expense_window_by_income_name(self, income_name):
         def _open_win():
             all_expenses = self.expenses_handler.get_all_expenses_by_income_name(income_name)
-            all_incomes = self.expenses_handler.get_all_incomes_by_income_name(income_name)
+            all_incomes = self.expenses_handler.get_all_incomes_by_income_type(income_name)
             app = ExpensesWindow(self, all_expenses, all_incomes, self.expenses_handler)
             app.show()
 

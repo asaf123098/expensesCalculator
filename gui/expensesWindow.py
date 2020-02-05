@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from PyQt5 import QtWidgets, uic
-from PyQt5.QtWidgets import QVBoxLayout, QTabWidget, QTableWidget, QTableWidgetItem, QHBoxLayout
+from PyQt5.QtWidgets import QVBoxLayout, QTabWidget, QTableWidget, QTableWidgetItem, QHBoxLayout, QComboBox
 
 from consts import ColumnNames
 from expenseshandler import ExpensesHandler
@@ -22,33 +22,52 @@ class ExpensesWindow(QtWidgets.QMainWindow):
         self.main_layout = self._find_widget(QVBoxLayout, 'verticalLayout')
 
         self._init_all_expenses_tab(all_expenses)
-        # self._init_all_incomes_tab(all_incomes)
+        self._init_all_incomes_tab(all_incomes)
 
-    # def _init_all_incomes_tab(self, all_incomes):
-    #     table = self._set_expenses_table(len(all_incomes))
-    #     for row_index, expense in enumerate(all_incomes):
-    #         expense_name = self.expenses_handler._get_expense_name_by_id(expense[ColumnNames.EXPENSE_ID])
-    #         expense_date = datetime.strptime(expense[ColumnNames.DATE_STR], "%d-%m-%Y")
-    #         expense_price = expense[ColumnNames.PRICE]
-    #         expense_description = expense[ColumnNames.DESCRIPTION]
-    #
-    #         table.setItem(row_index, 0, QTableWidgetItem(expense_name))
-    #         table.setItem(row_index, 1, QTableWidgetItem(str(expense_date.year)))
-    #         table.setItem(row_index, 2, QTableWidgetItem(str(expense_date.month)))
-    #         table.setItem(row_index, 3, QTableWidgetItem(str(expense_date.day)))
-    #         table.setItem(row_index, 4, QTableWidgetItem(str(expense_price)))
-    #         table.setItem(row_index, 5, QTableWidgetItem(expense_description))
-    #     layout.addWidget(table, stretch=7)
-    #
-    #
-    #     add_expense_layout = QHBoxLayout()
-    #     add_expense_layout.
-    #     layout.addWidget(table, stretch=7)
-    #     self.tab_widget.addTab(table, "Incomes")
-
+    def _init_all_incomes_tab(self, all_incomes):
+        self._set_incomes_table(all_incomes)
 
     def _init_all_expenses_tab(self, all_expenses):
-        table = self._set_expenses_table(len(all_expenses))
+        self._set_expenses_table(all_expenses)
+        self._set_expense_types_combo()
+
+    def _set_expense_types_combo(self):
+        all_types = self.expenses_handler.get_all_expense_types()
+        combo_box = self._find_widget(QComboBox, "new_expense_type_combo")
+        combo_box.addItems(all_types)
+
+    def _set_incomes_table(self, all_incomes):
+        table = self._find_widget(QTableWidget, "incomes_table")
+        table.setRowCount(len(all_incomes))
+        table.setColumnCount(5)
+        table.setHorizontalHeaderItem(0, QTableWidgetItem("Year"))
+        table.setHorizontalHeaderItem(1, QTableWidgetItem("Month"))
+        table.setHorizontalHeaderItem(2, QTableWidgetItem("Day"))
+        table.setHorizontalHeaderItem(3, QTableWidgetItem("Amount"))
+        table.setHorizontalHeaderItem(4, QTableWidgetItem("Description"))
+
+        for row_index, expense in enumerate(all_incomes):
+            income_date = datetime.strptime(expense[ColumnNames.DATE_STR], "%d-%m-%Y")
+            income_amount = expense[ColumnNames.AMOUNT]
+            income_description = expense[ColumnNames.DESCRIPTION]
+
+            table.setItem(row_index, 0, QTableWidgetItem(str(income_date.year)))
+            table.setItem(row_index, 1, QTableWidgetItem(str(income_date.month)))
+            table.setItem(row_index, 2, QTableWidgetItem(str(income_date.day)))
+            table.setItem(row_index, 3, QTableWidgetItem(str(income_amount)))
+            table.setItem(row_index, 4, QTableWidgetItem(income_description))
+
+    def _set_expenses_table(self, all_expenses):
+        table = self._find_widget(QTableWidget, "expenses_table")
+        table.setRowCount(len(all_expenses))
+        table.setColumnCount(6)
+        table.setHorizontalHeaderItem(0, QTableWidgetItem("Name"))
+        table.setHorizontalHeaderItem(1, QTableWidgetItem("Year"))
+        table.setHorizontalHeaderItem(2, QTableWidgetItem("Month"))
+        table.setHorizontalHeaderItem(3, QTableWidgetItem("Day"))
+        table.setHorizontalHeaderItem(4, QTableWidgetItem("Price"))
+        table.setHorizontalHeaderItem(5, QTableWidgetItem("Description"))
+
         for row_index, expense in enumerate(all_expenses):
             expense_name = self.expenses_handler._get_expense_name_by_id(expense[ColumnNames.EXPENSE_ID])
             expense_date = datetime.strptime(expense[ColumnNames.DATE_STR], "%d-%m-%Y")
@@ -61,18 +80,6 @@ class ExpensesWindow(QtWidgets.QMainWindow):
             table.setItem(row_index, 3, QTableWidgetItem(str(expense_date.day)))
             table.setItem(row_index, 4, QTableWidgetItem(str(expense_price)))
             table.setItem(row_index, 5, QTableWidgetItem(expense_description))
-
-    def _set_expenses_table(self, rows_num):
-        table = self._find_widget(QTableWidget, "expenses_table")
-        table.setRowCount(rows_num)
-        table.setColumnCount(6)
-        table.setHorizontalHeaderItem(0, QTableWidgetItem("Name"))
-        table.setHorizontalHeaderItem(1, QTableWidgetItem("Year"))
-        table.setHorizontalHeaderItem(2, QTableWidgetItem("Month"))
-        table.setHorizontalHeaderItem(3, QTableWidgetItem("Day"))
-        table.setHorizontalHeaderItem(4, QTableWidgetItem("Price"))
-        table.setHorizontalHeaderItem(5, QTableWidgetItem("Description"))
-        return table
 
     def _find_widget(self, type, name):
         widget = self.findChild(type, name)
