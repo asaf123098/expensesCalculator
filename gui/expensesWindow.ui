@@ -98,7 +98,7 @@
      <item>
       <widget class="QTabWidget" name="tabWidget">
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="tab">
         <attribute name="title">
@@ -138,7 +138,7 @@
                <string>Add expense:</string>
               </property>
               <property name="margin">
-               <number>0</number>
+               <number>3</number>
               </property>
               <property name="indent">
                <number>-1</number>
@@ -146,9 +146,9 @@
              </widget>
             </item>
             <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="0,0,0,5">
+             <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="0,0,0,0,0">
               <property name="spacing">
-               <number>20</number>
+               <number>10</number>
               </property>
               <item>
                <widget class="QDateEdit" name="new_expense_date"/>
@@ -164,9 +164,16 @@
                </widget>
               </item>
               <item>
+               <widget class="QLineEdit" name="optionalDescription">
+                <property name="placeholderText">
+                 <string>Optional Description</string>
+                </property>
+               </widget>
+              </item>
+              <item>
                <widget class="QDialogButtonBox" name="new_expense_dialog_box">
                 <property name="standardButtons">
-                 <set>QDialogButtonBox::Ok|QDialogButtonBox::Reset</set>
+                 <set>QDialogButtonBox::NoButton</set>
                 </property>
                </widget>
               </item>
@@ -244,7 +251,7 @@
               <item>
                <widget class="QDialogButtonBox" name="new_income_dialog_box">
                 <property name="standardButtons">
-                 <set>QDialogButtonBox::Ok|QDialogButtonBox::Reset</set>
+                 <set>QDialogButtonBox::NoButton</set>
                 </property>
                </widget>
               </item>

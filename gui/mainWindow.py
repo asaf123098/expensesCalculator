@@ -5,7 +5,6 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPalette, QColor
 from PyQt5.QtWidgets import QLineEdit, QPushButton, QScrollArea, QLabel, QApplication, QWidget, QVBoxLayout, QHBoxLayout
 
-from consts import ColumnNames
 from expenseshandler import ExpensesHandler
 from gui.expensesWindow import ExpensesWindow
 

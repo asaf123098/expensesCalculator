@@ -1,7 +1,7 @@
 import os
 import subprocess
 
-from dbConnectionData import DB_USER, DB_PASS, DB_NAME
+from dbBackup.dbConnectionData import DB_USER, DB_PASS, DB_NAME
 
 
 errors_whitelist = ['mysql: [Warning] Using a password on the command line interface can be insecure.\r\n',

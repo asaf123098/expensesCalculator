@@ -1,6 +1,6 @@
 from  mysql.connector import connect
 from consts import TableNames, ColumnNames, IncomeTypes
-from dbConnectionData import DB_USER, DB_PASS, DB_NAME
+from dbBackup.dbConnectionData import DB_USER, DB_PASS, DB_NAME
 
 class ExpensesHandler:
 
