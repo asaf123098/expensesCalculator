@@ -151,7 +151,14 @@
                <number>10</number>
               </property>
               <item>
-               <widget class="QDateEdit" name="new_expense_date"/>
+               <widget class="QDateEdit" name="new_expense_date">
+                <property name="displayFormat">
+                 <string>dd-MM-yyyy</string>
+                </property>
+                <property name="calendarPopup">
+                 <bool>true</bool>
+                </property>
+               </widget>
               </item>
               <item>
                <widget class="QComboBox" name="new_expense_type_combo"/>
@@ -164,7 +171,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="optionalDescription">
+               <widget class="QLineEdit" name="optional_description">
                 <property name="placeholderText">
                  <string>Optional Description</string>
                 </property>
@@ -173,7 +180,7 @@
               <item>
                <widget class="QDialogButtonBox" name="new_expense_dialog_box">
                 <property name="standardButtons">
-                 <set>QDialogButtonBox::NoButton</set>
+                 <set>QDialogButtonBox::Ok</set>
                 </property>
                </widget>
               </item>

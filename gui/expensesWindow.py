@@ -1,16 +1,15 @@
 from datetime import datetime
 
-from PyQt5 import QtWidgets, uic
-from PyQt5.QtWidgets import QVBoxLayout, QTabWidget, QTableWidget, QTableWidgetItem, QHBoxLayout, QComboBox, \
-    QPushButton, QDialogButtonBox
-
+from PyQt5 import QtWidgets, uic, QtCore
+from PyQt5.QtWidgets import QVBoxLayout, QTableWidget, QTableWidgetItem, QComboBox, \
+    QDialogButtonBox, QDateEdit, QSpinBox, QLineEdit
 from consts import ColumnNames
 from expenseshandler import ExpensesHandler
 
 
 class ExpensesWindow(QtWidgets.QMainWindow):
 
-    def __init__(self, parent, all_expenses, all_incomes, expenses_handler):
+    def __init__(self, parent, income_name, expenses_handler):
         """
         :type expenses_handler ExpensesHandler
         :param parent:
@@ -21,16 +20,17 @@ class ExpensesWindow(QtWidgets.QMainWindow):
         uic.loadUi(r"C:\Users\Asaf\Desktop\expensesCalculator\gui\expensesWindow.ui", self)
         self.expenses_handler = expenses_handler
         self.main_layout = self._find_widget(QVBoxLayout, 'verticalLayout')
-
-        self._init_all_expenses_tab(all_expenses)
-        self._init_all_incomes_tab(all_incomes)
+        self.income_name = income_name
+        self._init_all_expenses_tab()
+        self._init_all_incomes_tab()
         self._init_add_expense_area()
 
-    def _init_all_expenses_tab(self, all_expenses):
-        self._set_expenses_table(all_expenses)
+    def _init_all_expenses_tab(self):
+        self._set_expenses_table()
         self._set_expense_types_combo()
 
-    def _set_expenses_table(self, all_expenses):
+    def _set_expenses_table(self):
+        all_expenses = self.expenses_handler.get_all_expenses_by_income_name(self.income_name)
         table = self._find_widget(QTableWidget, "expenses_table")
         table.setRowCount(len(all_expenses))
         table.setColumnCount(6)
@@ -59,10 +59,11 @@ class ExpensesWindow(QtWidgets.QMainWindow):
         combo_box = self._find_widget(QComboBox, "new_expense_type_combo")
         combo_box.addItems(all_types)
 
-    def _init_all_incomes_tab(self, all_incomes):
-        self._set_incomes_table(all_incomes)
+    def _init_all_incomes_tab(self):
+        self._set_incomes_table()
 
-    def _set_incomes_table(self, all_incomes):
+    def _set_incomes_table(self):
+        all_incomes = self.expenses_handler.get_all_incomes_by_income_type(self.income_name)
         table = self._find_widget(QTableWidget, "incomes_table")
         table.setRowCount(len(all_incomes))
         table.setColumnCount(5)
@@ -84,19 +85,21 @@ class ExpensesWindow(QtWidgets.QMainWindow):
             table.setItem(row_index, 4, QTableWidgetItem(income_description))
 
     def _init_add_expense_area(self):
-
+        self._find_widget(QDateEdit, 'new_expense_date').setDateTime(QtCore.QDateTime.currentDateTime())
         box_buttons = self._find_widget(QDialogButtonBox, 'new_expense_dialog_box')
-        box_buttons.addButton("Apply", QDialogButtonBox.AcceptRole)
-        box_buttons.addButton("Reset", QDialogButtonBox.RejectRole)
-        box_buttons.accepted.connect(self._add_new_expesnse)
-        box_buttons.rejected.connect(self._reset_new_expense_area)
+        box_buttons.accepted.connect(self._add_new_expense)
 
-    def _add_new_expesnse(self):
-        pass
-        # self.expenses_handler.add_expense(id=, date=, price=)
+    def _add_new_expense(self):
+        chosen_expense_name = self._find_widget(QComboBox, 'new_expense_type_combo').currentText()
+        id = self.expenses_handler.get_expense_id_by_name(chosen_expense_name)
+        date = self._find_widget(QDateEdit, 'new_expense_date').date()
+        date = "%i-%i-%i" % (date.day(), date.month(), date.year())
+        price = self._find_widget(QSpinBox, 'new_expense_price').value()
+        description = self._find_widget(QLineEdit, 'optional_description').text()
+        description = None if description == '' else description
 
-    def _reset_new_expense_area(self):
-        print ("Reset clicked")
+        self.expenses_handler.add_expense(id=id, date=date, price=price, description=description)
+        self._set_expenses_table()
 
     def _find_widget(self, type, name):
         widget = self.findChild(type, name)

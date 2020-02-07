@@ -10,6 +10,10 @@ class ExpensesHandler:
 									  host='localhost', db=DB_NAME)
 		self.cursor = self.connection.cursor()
 
+	def get_expense_id_by_name(self, expense_name):
+		self.cursor.execute(operation=f"SELECT {ColumnNames.EXPENSE_ID} FROM {TableNames.EXPENSE_DETAILS} WHERE {ColumnNames.EXPENSE_NAME} = '{expense_name}';")
+		return self.cursor.fetchall()[0][0]
+
 	def get_all_incomes_by_income_type(self, income_type):
 		self.cursor.execute(operation=f"SELECT "
 									  f"incs.{ColumnNames.DATE_STR}, "
@@ -116,4 +120,5 @@ class ExpensesHandler:
 if __name__ == "__main__":
 
 	# print(ExpensesHandler().get_all_expenses_from_dad())
-	print(ExpensesHandler().get_all_incomes_by_income_type(IncomeTypes.FROM_DAD))
+	print(ExpensesHandler()._does_expense_exist(id=1, date='7-2-2020', price=3))
+	# print(ExpensesHandler().get_all_incomes_by_income_type(IncomeTypes.FROM_DAD))
