@@ -14,6 +14,10 @@ class ExpensesHandler:
 		self.cursor.execute(operation=f"SELECT {ColumnNames.EXPENSE_ID} FROM {TableNames.EXPENSE_DETAILS} WHERE {ColumnNames.EXPENSE_NAME} = '{expense_name}';")
 		return self.cursor.fetchall()[0][0]
 
+	def get_income_id_by_name(self, income_name):
+		self.cursor.execute(operation=f"SELECT {ColumnNames.INCOME_ID} FROM {TableNames.INCOME_DETAILS} WHERE {ColumnNames.INCOME_NAME} = '{income_name}';")
+		return self.cursor.fetchall()[0][0]
+
 	def get_all_incomes_by_income_type(self, income_type):
 		self.cursor.execute(operation=f"SELECT "
 									  f"incs.{ColumnNames.DATE_STR}, "
@@ -99,7 +103,7 @@ class ExpensesHandler:
 
 			columns_str = ", ".join(columns_list)
 			self.cursor.execute(operation=f"INSERT INTO {TableNames.EXPENSES} ({columns_str})"
-										  f"VALUES ('{date}', {id}, {price}, {description});")
+										  f"VALUES ('{date}', {id}, {price}, '{description}');")
 			self.connection.commit()
 		else:
 			raise Exception("Expense already exists!!")
@@ -110,6 +114,27 @@ class ExpensesHandler:
 									  f"WHERE {ColumnNames.EXPENSE_ID}={id} "
 									  f"and {ColumnNames.DATE_STR}='{date}'"
 									  f"and {ColumnNames.PRICE}={price}")
+		return len(self.cursor.fetchall()) > 0
+
+
+	def add_income(self, id, date, amount, description=None):
+		if not self._does_income_exist(id=id, date=date, amount=amount):
+			columns_list = [ColumnNames.DATE_STR, ColumnNames.INCOME_ID, ColumnNames.AMOUNT, ColumnNames.DESCRIPTION]
+			if description is None:
+				description = "NULL"
+
+			columns_str = ", ".join(columns_list)
+			self.cursor.execute(operation=f"INSERT INTO {TableNames.INCOMES} ({columns_str})"
+										  f"VALUES ('{date}', {id}, {amount}, {description});")
+			self.connection.commit()
+		else:
+			raise Exception("Income already exists!!")
+
+	def _does_income_exist(self, id, date, amount):
+		self.cursor.execute(operation=f"SELECT * FROM {TableNames.INCOMES} "
+									  f"WHERE {ColumnNames.INCOME_ID}={id} "
+									  f"and {ColumnNames.DATE_STR}='{date}'"
+									  f"and {ColumnNames.AMOUNT}={amount}")
 		return len(self.cursor.fetchall()) > 0
 
 	def __del__(self):

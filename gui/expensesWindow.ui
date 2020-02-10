@@ -73,7 +73,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_2">
+        <widget class="QLabel" name="total_expended_label">
          <property name="text">
           <string>0</string>
          </property>
@@ -87,7 +87,21 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_4">
+        <widget class="QLabel" name="total_income_label">
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Available Budget:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="available_budget_label">
          <property name="text">
           <string>0</string>
          </property>
@@ -168,10 +182,13 @@
                 <property name="prefix">
                  <string>₪</string>
                 </property>
+                <property name="maximum">
+                 <number>100000</number>
+                </property>
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="optional_description">
+               <widget class="QLineEdit" name="expense_optional_description">
                 <property name="placeholderText">
                  <string>Optional Description</string>
                 </property>
@@ -246,19 +263,33 @@
                <number>3</number>
               </property>
               <item>
-               <widget class="QLineEdit" name="new_income_amount">
-                <property name="placeholderText">
-                 <string>Amount</string>
+               <widget class="QDateEdit" name="new_income_date">
+                <property name="calendarPopup">
+                 <bool>true</bool>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QDateEdit" name="new_income_date"/>
+               <widget class="QSpinBox" name="new_income_amount">
+                <property name="prefix">
+                 <string>₪</string>
+                </property>
+                <property name="maximum">
+                 <number>100000</number>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="income_optional_description">
+                <property name="placeholderText">
+                 <string>Optional Description</string>
+                </property>
+               </widget>
               </item>
               <item>
                <widget class="QDialogButtonBox" name="new_income_dialog_box">
                 <property name="standardButtons">
-                 <set>QDialogButtonBox::NoButton</set>
+                 <set>QDialogButtonBox::Ok</set>
                 </property>
                </widget>
               </item>
