@@ -37,7 +37,7 @@ CREATE TABLE `expense_details` (
   PRIMARY KEY (`expenseId`),
   KEY `expense_to_income_pointer_idx` (`incomeId`),
   CONSTRAINT `expense_to_income_pointer` FOREIGN KEY (`incomeId`) REFERENCES `income_details` (`incomeId`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -46,7 +46,7 @@ CREATE TABLE `expense_details` (
 
 LOCK TABLES `expense_details` WRITE;
 /*!40000 ALTER TABLE `expense_details` DISABLE KEYS */;
-INSERT INTO `expense_details` VALUES (1,0,'Haircut'),(2,0,'Shirt'),(3,0,'Jeans'),(4,0,'Shoes');
+INSERT INTO `expense_details` VALUES (1,1,'Haircut'),(2,1,'Shirt'),(3,1,'Jeans'),(4,1,'Shoes'),(5,1,'dad-custom');
 /*!40000 ALTER TABLE `expense_details` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -73,7 +73,7 @@ CREATE TABLE `expenses` (
 
 LOCK TABLES `expenses` WRITE;
 /*!40000 ALTER TABLE `expenses` DISABLE KEYS */;
-INSERT INTO `expenses` VALUES ('27-09-2019',4,315,'White Nike Air Force');
+INSERT INTO `expenses` VALUES ('2-8-2019',1,50,NULL),('19-9-2019',2,120,NULL),('22-9-2019',2,50,NULL),('27-9-2019',1,50,NULL),('29-7-2019',4,315,'White Nike Air Force'),('4-10-2019',2,50,'NULL'),('29-10-2019',3,290,'NULL'),('1-11-2019',1,50,'NULL'),('8-11-2019',3,225,'NULL'),('17-11-2019',2,25,'NULL'),('12-12-2019',1,50,'NULL'),('14-12-2019',1,50,'NULL'),('12-1-2020',5,75,'Passport renew'),('5-2-2020',3,400,'NULL'),('6-2-2020',1,50,'NULL');
 /*!40000 ALTER TABLE `expenses` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -124,7 +124,7 @@ CREATE TABLE `incomes` (
 
 LOCK TABLES `incomes` WRITE;
 /*!40000 ALTER TABLE `incomes` DISABLE KEYS */;
-INSERT INTO `incomes` VALUES ('02-09-2019',1,500,NULL);
+INSERT INTO `incomes` VALUES ('2-7-2019',1,500,NULL),('2-8-2019',1,500,NULL),('28-8-2019',1,500,NULL),('2-10-2019',1,500,NULL),('3-11-2019',1,500,NULL),('1-12-2019',1,500,NULL),('1-1-2020',1,500,NULL);
 /*!40000 ALTER TABLE `incomes` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -137,4 +137,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-01-23  0:33:22
+-- Dump completed on 2020-02-11  0:07:26
