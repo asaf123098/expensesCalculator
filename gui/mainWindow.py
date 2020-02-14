@@ -15,13 +15,13 @@ class MainWindow(QtWidgets.QMainWindow):
         super(MainWindow, self).__init__()
         self.expenses_handler = ExpensesHandler()
         uic.loadUi(r"C:\Users\Asaf\Desktop\expensesCalculator\gui\mainWindow.ui", self)
+        self.income_budgets = []
         self._init_widget_objects()
 
     def _init_widget_objects(self):
         self.central_widget = self.centralWidget()
-        self._init_total_money_text_edit()
-        self._init_update_button()
         self._fill_expenses_container()
+        self._init_total_budget_area()
 
     def _fill_expenses_container(self):
         income_types = self.expenses_handler.get_all_income_types()
@@ -32,10 +32,14 @@ class MainWindow(QtWidgets.QMainWindow):
         for income_type in income_types:
             horizontal_layout = QHBoxLayout()
             horizontal_layout.setObjectName(income_type)
-            label = QLabel(income_type)
             open_button = QPushButton("Open")
             open_button.clicked.connect(self._open_expense_window_by_income_name(income_type))
-            horizontal_layout.addWidget(label)
+
+            horizontal_layout.addWidget(QLabel(income_type))
+            horizontal_layout.addWidget(QLabel("Available Budget:"))
+            income_type_avlbl_bdgt = ExpensesWindow(self, income_type, self.expenses_handler).get_available_budget()
+            self.income_budgets.append(income_type_avlbl_bdgt)
+            horizontal_layout.addWidget(QLabel(str(income_type_avlbl_bdgt)))
             horizontal_layout.addWidget(open_button)
 
             self.vbox.addLayout(horizontal_layout)
@@ -49,20 +53,30 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def _open_expense_window_by_income_name(self, income_name):
         def _open_win():
-            app = ExpensesWindow(self, income_name , self.expenses_handler)
+            app = ExpensesWindow(self, income_name, self.expenses_handler)
+            app.setWindowModality(Qt.WindowModal)
             app.show()
 
         return _open_win
 
-    def _init_update_button(self):
-        self.update_button = self._find_widget(QPushButton, 'update_button')
-        self.update_button.clicked.connect(self._update_total_money)
+    def _init_total_budget_area(self):
+        update_button = self._find_widget(QPushButton, 'update_button')
+        total_money_line = self._find_widget(QLineEdit, 'total_money')
+        total_money_line.textChanged.connect(self._enable_update_button)
+        update_button.clicked.connect(self._update_available_budget)
 
-    def _update_total_money(self):
-        pass
+    def _enable_update_button(self,):
+        total_money_line = self._find_widget(QLineEdit, 'total_money')
+        enable_button_bool = True if total_money_line.text() else False
+        update_button = self._find_widget(QPushButton, 'update_button')
+        update_button.setEnabled(enable_button_bool)
 
-    def _init_total_money_text_edit(self):
-        self.total_money = self._find_widget(QLineEdit, 'total_money')
+
+    def _update_available_budget(self):
+        total_money_value = self._find_widget(QLineEdit, 'total_money').text()
+        total_money_label = self._find_widget(QLabel, 'available_budget_label')
+        available_budget = str(int(total_money_value) - sum(self.income_budgets))
+        total_money_label.setText(available_budget)
 
     def _find_widget(self, type, name):
         widget = self.findChild(type, name)

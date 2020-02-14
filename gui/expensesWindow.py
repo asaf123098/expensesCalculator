@@ -1,7 +1,6 @@
 from datetime import datetime
 
 from PyQt5 import QtWidgets, uic, QtCore
-from PyQt5.QtCore import QObject
 from PyQt5.QtWidgets import QVBoxLayout, QTableWidget, QTableWidgetItem, QComboBox, \
     QDialogButtonBox, QDateEdit, QSpinBox, QLineEdit, QLabel
 from consts import ColumnNames
@@ -62,12 +61,12 @@ class ExpensesWindow(QtWidgets.QMainWindow):
         self._update_expenses_total_values()
 
     def _update_expenses_total_values(self):
-        expenses_sum = sum(self.expense_prices)
+        expenses_sum = self.get_total_expenses()
 
         total_expended_label = self._find_widget(QLabel, 'total_expended_label')
         total_expended_label.setText(str(expenses_sum))
         available_budget_label = self._find_widget(QLabel, 'available_budget_label')
-        available_budget_label.setText(str(sum(self.income_amounts) - expenses_sum))
+        available_budget_label.setText(str(self.get_available_budget()))
 
     def _set_expense_types_combo(self):
         all_types = self.expenses_handler.get_all_expense_types()
@@ -105,12 +104,12 @@ class ExpensesWindow(QtWidgets.QMainWindow):
         self._update_incomes_total_values()
 
     def _update_incomes_total_values(self):
-        incomes_sum = sum(self.income_amounts)
+        incomes_sum = self.get_total_incomes()
 
         total_expended_label = self._find_widget(QLabel, 'total_income_label')
         total_expended_label.setText(str(incomes_sum))
         available_budget_label = self._find_widget(QLabel, 'available_budget_label')
-        available_budget_label.setText(str(incomes_sum - sum(self.expense_prices)))
+        available_budget_label.setText(str(self.get_available_budget()))
 
     def _init_add_income_area(self):
         self._find_widget(QDateEdit, 'new_income_date').setDateTime(QtCore.QDateTime.currentDateTime())
@@ -144,6 +143,15 @@ class ExpensesWindow(QtWidgets.QMainWindow):
 
         self.expenses_handler.add_expense(id=expense_id, date=date, price=price, description=description)
         self._set_expenses_table()
+
+    def get_total_incomes(self):
+        return sum(self.income_amounts)
+
+    def get_total_expenses(self):
+        return sum(self.expense_prices)
+
+    def get_available_budget(self):
+        return self.get_total_incomes() - self.get_total_expenses()
 
     def _find_widget(self, type, name):
         widget = self.findChild(type, name)
