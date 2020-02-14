@@ -101,7 +101,7 @@
        </widget>
       </item>
       <item row="0" column="0">
-       <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,1,1">
+       <layout class="QHBoxLayout" name="horizontalLayout" stretch="2,1,2">
         <property name="spacing">
          <number>20</number>
         </property>
@@ -146,39 +146,12 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="total_money">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-            <horstretch>2</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
+         <widget class="QSpinBox" name="total_money">
+          <property name="prefix">
+           <string>₪</string>
           </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>100000</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="sizeIncrement">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="layoutDirection">
-           <enum>Qt::LeftToRight</enum>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-          </property>
-          <property name="placeholderText">
-           <string>Enter amount</string>
+          <property name="maximum">
+           <number>100000</number>
           </property>
          </widget>
         </item>

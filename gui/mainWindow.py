@@ -3,7 +3,8 @@ import sys
 from PyQt5 import QtWidgets, uic
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPalette, QColor
-from PyQt5.QtWidgets import QLineEdit, QPushButton, QScrollArea, QLabel, QApplication, QWidget, QVBoxLayout, QHBoxLayout
+from PyQt5.QtWidgets import QLineEdit, QPushButton, QScrollArea, QLabel, QApplication, QWidget, QVBoxLayout, \
+    QHBoxLayout, QSpinBox
 
 from expenseshandler import ExpensesHandler
 from gui.expensesWindow import ExpensesWindow
@@ -61,19 +62,19 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def _init_total_budget_area(self):
         update_button = self._find_widget(QPushButton, 'update_button')
-        total_money_line = self._find_widget(QLineEdit, 'total_money')
-        total_money_line.textChanged.connect(self._enable_update_button)
+        total_money_line = self._find_widget(QSpinBox, 'total_money')
+        total_money_line.valueChanged.connect(self._enable_update_button)
         update_button.clicked.connect(self._update_available_budget)
 
     def _enable_update_button(self,):
-        total_money_line = self._find_widget(QLineEdit, 'total_money')
-        enable_button_bool = True if total_money_line.text() else False
+        total_money_line = self._find_widget(QSpinBox, 'total_money')
+        enable_button_bool = True if total_money_line.value() != 0 else False
         update_button = self._find_widget(QPushButton, 'update_button')
         update_button.setEnabled(enable_button_bool)
 
 
     def _update_available_budget(self):
-        total_money_value = self._find_widget(QLineEdit, 'total_money').text()
+        total_money_value = self._find_widget(QSpinBox, 'total_money').value()
         total_money_label = self._find_widget(QLabel, 'available_budget_label')
         available_budget = str(int(total_money_value) - sum(self.income_budgets))
         total_money_label.setText(available_budget)
