@@ -3,9 +3,10 @@ import sys
 from PyQt5 import QtWidgets, uic
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPalette, QColor
-from PyQt5.QtWidgets import QLineEdit, QPushButton, QScrollArea, QLabel, QApplication, QWidget, QVBoxLayout, \
+from PyQt5.QtWidgets import QPushButton, QScrollArea, QLabel, QApplication, QWidget, QVBoxLayout, \
     QHBoxLayout, QSpinBox
 
+from dbBackup.dbBackupHandler import export_db_to_backup
 from expenseshandler import ExpensesHandler
 from gui.expensesWindow import ExpensesWindow
 
@@ -23,6 +24,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.central_widget = self.centralWidget()
         self._fill_expenses_container()
         self._init_total_budget_area()
+        self._init_backup_db_button()
 
     def _fill_expenses_container(self):
         income_types = self.expenses_handler.get_all_income_types()
@@ -65,6 +67,10 @@ class MainWindow(QtWidgets.QMainWindow):
         total_money_line = self._find_widget(QSpinBox, 'total_money')
         total_money_line.valueChanged.connect(self._enable_update_button)
         update_button.clicked.connect(self._update_available_budget)
+
+    def _init_backup_db_button(self):
+        button = self._find_widget(QPushButton, 'update_db')
+        button.clicked.connect(export_db_to_backup)
 
     def _enable_update_button(self,):
         total_money_line = self._find_widget(QSpinBox, 'total_money')

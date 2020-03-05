@@ -211,6 +211,13 @@
       </item>
      </layout>
     </item>
+    <item row="1" column="0">
+     <widget class="QPushButton" name="update_db">
+      <property name="text">
+       <string>Backup DataBase</string>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
