@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 
 from PyQt5 import QtWidgets, uic, QtCore
@@ -17,7 +18,8 @@ class ExpensesWindow(QtWidgets.QMainWindow):
         :param expenses_handler:
         """
         super(ExpensesWindow, self).__init__(parent)
-        uic.loadUi(r"C:\Users\Asaf\Desktop\expensesCalculator\gui\expensesWindow.ui", self)
+        userprofile = os.getenv("userprofile")
+        uic.loadUi(r"%s\Desktop\expensesCalculator\gui\expensesWindow.ui" % userprofile, self)
         self.expenses_handler = expenses_handler
         self.main_layout = self._find_widget(QVBoxLayout, 'verticalLayout')
         self.income_name = income_name

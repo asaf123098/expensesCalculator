@@ -1,3 +1,4 @@
+import os
 import sys
 
 from PyQt5 import QtWidgets, uic
@@ -16,7 +17,8 @@ class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
         self.expenses_handler = ExpensesHandler()
-        uic.loadUi(r"C:\Users\Asaf\Desktop\expensesCalculator\gui\mainWindow.ui", self)
+        userprofile = os.getenv("userprofile")
+        uic.loadUi(r"%s\Desktop\expensesCalculator\gui\mainWindow.ui" % userprofile, self)
         self.income_budgets = []
         self._init_widget_objects()
 
